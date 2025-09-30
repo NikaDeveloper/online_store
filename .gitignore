@@ -123,3 +123,4 @@ __marimo__/
 *.pyc
 *.sqlite3
 *.db
+sqlite
