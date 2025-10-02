@@ -1,0 +1,43 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Плагины",
+      "description": "Расширения и дополнения для программ"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Боты",
+      "description": "Автоматизированные программы для мессенджеров"
+    }
+  },
+
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "SEO-оптимизатор (Плагин)",
+      "description": "Плагин для улучшения позиций в поиске.",
+      "category": 1,
+      "price": 2500.00,
+      "created_at": "2025-10-01T10:00:00Z",
+      "updated_at": "2025-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Менеджер заказов (Бот)",
+      "description": "Бот для автоматической обработки заказов.",
+      "category": 2,
+      "price": 5500.00,
+      "created_at": "2025-10-01T10:05:00Z",
+      "updated_at": "2025-10-01T10:05:00Z"
+    }
+  }
+]

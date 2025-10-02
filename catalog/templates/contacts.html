@@ -31,18 +31,28 @@
                     <div class="card mb-4 box-shadow">
                         <div class="card-body">
                             <table class="table table-striped">
+                                {% if contact %}
                                 <tr>
-                                    <td class="w-25">Страна</td>
-                                    <td>USA</td>
+                                    <td class="w-25">Название компании</td>
+                                    <td>{{ contact.name }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="w-25">ИНН</td>
-                                    <td>91-1144442</td>
+                                    <td class="w-25">Email для связи</td>
+                                    <td>{{ contact.email }}</td>
                                 </tr>
                                 <tr>
                                     <td class="w-25">Адрес</td>
-                                    <td>Redmond,WA,98052-6399</td>
+                                    <td>{{ contact.address }}</td>
                                 </tr>
+                                <tr>
+                                    <td class="w-25">Телефон</td>
+                                    <td>{{ contact.phone }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                            <td colspan="2">Контактные данные магазина не заполнены.</td>
+                                </tr>
+                                {% endif %}
                             </table>
                         </div>
                     </div>
