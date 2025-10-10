@@ -1,5 +1,52 @@
-{% extends 'catalog/base.html' %} {% block content %}
-<div class="container">
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="container my-5">
     <h1 class="display-4 text-center">{{ product.name }}</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+            {% else %}
+            <div class="p-5 border rounded text-center bg-light">
+                <p class="mb-0 text-muted">Изображение отсутствует</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <h3 class="mb-3">Подробности о продукте</h3>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Категория:</th>
+                    <td>{{ product.category.name }}</td>
+                </tr>
+                <tr>
+                    <th>Цена:</th>
+                    <td class="fw-bold text-success">{{ product.price }} руб.</td>
+                </tr>
+                <tr>
+                    <th>Создан:</th>
+                    <td>{{ product.created_at|date:"d M Y" }}</td>
+                </tr>
+                <tr>
+                    <th>Обновлен:</th>
+                    <td>{{ product.updated_at|date:"d M Y H:i" }}</td>
+                </tr>
+            </table>
+
+            <h3 class="mt-4">Описание:</h3>
+            <p>{{ product.description }}</p>
+
+            <a href="{% url 'catalog:home' %}" class="btn btn-outline-secondary">
+                ← Назад к каталогу
+            </a>
+            <button type="button" class="btn btn-primary">
+                Купить
+            </button>
+        </div>
     </div>
+</div>
 {% endblock %}
