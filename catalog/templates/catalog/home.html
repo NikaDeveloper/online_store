@@ -1,5 +1,4 @@
 {% extends 'catalog/base.html' %}
-
 {% block content %}
 <div class="container">
 
@@ -39,9 +38,6 @@
 
         {% if products.has_previous %}
         <li class="page-item">
-          <a class="page-link" href="?page={{ products.previous_page_number }}">
-              &laquo; Предыдущая
-          </a>
         </li>
         {% endif %}
 
@@ -61,6 +57,5 @@
 
       </ul>
     </nav>
-
 </div>
 {% endblock %}
