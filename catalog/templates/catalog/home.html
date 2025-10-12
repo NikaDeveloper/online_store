@@ -33,18 +33,27 @@
         {% endfor %}
     </div>
 
+{% if is_paginated %}
     <nav aria-label="Пагинация">
       <ul class="pagination justify-content-center mt-4">
 
         {% if products.has_previous %}
         <li class="page-item">
+          <a class="page-link" href="?page={{ products.previous_page_number }}">
+            &laquo; Предыдущая
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">&laquo; Предыдущая</span>
         </li>
         {% endif %}
 
+
         <li class="page-item active" aria-current="page">
-          <a class="page-link" href="#">
+          <span class="page-link">
               Страница {{ products.number }} из {{ products.paginator.num_pages }}
-          </a>
+          </span>
         </li>
 
         {% if products.has_next %}
@@ -53,9 +62,15 @@
               Следующая &raquo;
           </a>
         </li>
+        {% else %}
+        <li class="page-item disabled">
+            <span class="page-link">Следующая &raquo;</span>
+        </li>
         {% endif %}
 
       </ul>
     </nav>
+    {% endif %}
+
 </div>
 {% endblock %}

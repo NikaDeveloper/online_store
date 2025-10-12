@@ -1,21 +1,19 @@
-from django.views.generic import ListView, DetailView, TemplateView, CreateView
-from django.urls import reverse_lazy, reverse
-from .models import Product
+from django.views.generic import ListView, TemplateView, DetailView, CreateView
+from .models import Product, Contact, Category
+from django.urls import reverse_lazy
 
 
 class ProductListView(ListView):
     model = Product
     template_name = 'catalog/home.html'
     context_object_name = 'products'
-    paginate_by = 9
 
-    def get_queryset(self):
-        queryset = super().get_queryset().order_by('-created_at')
-        return queryset
+    paginate_by = 9
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Каталог товаров'
+        return context
 
 
 class ContactsTemplateView(TemplateView):
@@ -23,6 +21,7 @@ class ContactsTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['contact'] = Contact.objects.first()
         context['title'] = 'Контакты'
         return context
 
@@ -32,14 +31,9 @@ class ProductDetailView(DetailView):
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = self.object.name
-        return context
-
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ('name', 'description', 'price', 'category', 'image')
+    fields = ('name', 'description', 'image', 'category', 'price')
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:home')

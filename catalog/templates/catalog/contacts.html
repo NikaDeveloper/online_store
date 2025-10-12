@@ -1,9 +1,9 @@
 {% extends 'catalog/base.html' %}
-{% block content %}
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-</div>
 
-<div class="container">
+{% block header_title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
 
     {% if success_message %}
         <div class="alert alert-success" role="alert">
@@ -35,38 +35,13 @@
                         </tr>
                         {% else %}
                         <tr>
-                                    <td colspan="2">Контактные данные магазина не заполнены.</td>
+                            <td colspan="2">Контактные данные магазина не заполнены.</td>
                         </tr>
                         {% endif %}
                     </table>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Свяжитесь с нами</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post" action="" class="form-floating">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="name">Имя</label>
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone">Телефон</label>
-                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="message">Сообщение</label>
-                            <textarea type="text" name="message" class="form-control" id="message" placeholder="Контактный телефон" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Отправить</button>
-                    </form>
-                </div>
-            </div>
         </div>
-    </div>
 </div>
 {% endblock %}
