@@ -1,29 +1,39 @@
-from django.shortcuts import render
-from .models import Product, Contact
+from django.views.generic import ListView, TemplateView, DetailView, CreateView
+from .models import Product, Contact, Category
+from django.urls import reverse_lazy
 
 
-def home(request):
-    latest_products = Product.objects.all().order_by('-created_at')[:5]
-
-    print("\n--- Последние 5 продуктов (консоль сервера) ---")
-    for product in latest_products:
-        print(f"ID: {product.id}, Название: {product.name}, Цена: {product.price}")
-    print("-------------------------------------------------")
-
-    context = {
-        'title': 'Skystore: Главная страница',
-        'latest_products': latest_products
-    }
-    return render(request, 'home.html', context)
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'products'
+    paginate_by = 9
 
 
-def contacts(request):
-    # Метод .first() получает первую запись из таблицы Contact.
-    # Мы используем его, потому что у магазина обычно только один набор контактов.
-    contact_data = Contact.objects.first()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Каталог товаров'
+        return context
 
-    context = {
-        'title': 'Контакты Skystore',
-        'contact': contact_data  # Передаем объект контакта в шаблон
-    }
-    return render(request, 'contacts.html', context)
+
+class ContactsTemplateView(TemplateView):
+    template_name = 'catalog/contacts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['contact'] = Contact.objects.first()
+        context['title'] = 'Контакты'
+        return context
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'category', 'price')
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:home')

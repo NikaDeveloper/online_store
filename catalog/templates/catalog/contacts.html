@@ -1,0 +1,47 @@
+{% extends 'catalog/base.html' %}
+
+{% block header_title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    {% if success_message %}
+        <div class="alert alert-success" role="alert">
+            {{ success_message }}
+        </div>
+    {% endif %}
+
+    <div class="row text-start">
+        <div class="col-lg-9 col-md-6 col-sm-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        {% if contact %}
+                        <tr>
+                            <td class="w-25">Название компании</td>
+                            <td>{{ contact.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Email для связи</td>
+                            <td>{{ contact.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Адрес</td>
+                            <td>{{ contact.address }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Телефон</td>
+                            <td>{{ contact.phone }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="2">Контактные данные магазина не заполнены.</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+</div>
+{% endblock %}
