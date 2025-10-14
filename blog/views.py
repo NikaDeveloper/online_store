@@ -1,5 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import BlogEntry
 
 
@@ -33,13 +35,11 @@ class BlogEntryDetailView(DetailView):
         self.object.save()
 
         if self.object.views_count == 100:
-            from django.core.mail import send_mail
-            from django.conf import settings
             send_mail(
                 subject='Поздравляем с 100 просмотрами!',
                 message=f'Ваша статья "{self.object.title}" набрала 100 просмотров.',
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=['ваш_адрес@example.com'],
+                recipient_list=[settings.EMAIL_FOR_NOTIFICATIONS],
                 fail_silently=False,
             )
 
