@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="display-4 text-center mb-4">{{ blog_entry.title }}</h1>
+
+            {% if blog_entry.preview %}
+            <img src="{{ blog_entry.preview.url }}" class="img-fluid rounded mb-4" alt="{{ blog_entry.title }}">
+            {% endif %}
+
+            <div class="d-flex justify-content-between text-muted border-bottom pb-2 mb-4">
+                <small>Дата публикации: {{ blog_entry.created_at|date:"d M Y" }}</small>
+                <small>Просмотров: {{ blog_entry.views_count }}</small>
+            </div>
+
+            <div class="content mb-5">
+                <p>{{ blog_entry.content|linebreaks }}</p>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'blog:list' %}" class="btn btn-outline-secondary">← К списку статей</a>
+                <div class="btn-group">
+                    <a href="{% url 'blog:edit' slug=blog_entry.slug %}" class="btn btn-outline-info">Редактировать</a>
+                    <a href="{% url 'blog:delete' slug=blog_entry.slug %}" class="btn btn-outline-danger">Удалить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
