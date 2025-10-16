@@ -43,6 +43,10 @@
             <a href="{% url 'catalog:home' %}" class="btn btn-outline-secondary">
                 ← Назад к каталогу
             </a>
+
+            <a href="{% url 'catalog:product_update' pk=product.pk %}" class="btn btn-warning">Редактировать</a>
+            <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>
+
             <button type="button" class="btn btn-primary">
                 Купить
             </button>
