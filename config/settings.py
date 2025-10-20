@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog',
     'blog',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -101,3 +102,5 @@ EMAIL_HOST_USER = 'your_email@example.com'
 EMAIL_HOST_PASSWORD = 'your_password'
 
 EMAIL_FOR_NOTIFICATIONS = 'manager@example.com'
+
+AUTH_USER_MODEL = 'users.CustomUser'
