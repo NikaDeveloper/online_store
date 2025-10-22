@@ -1,20 +1,35 @@
 {% extends 'catalog/base.html' %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="mb-4">Добавить новый товар</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        {% if object %}
+                            Редактировать продукт
+                        {% else %}
+                            Создать новый продукт
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-            <div class="card p-4">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
+                        {{ form.as_p }}
 
-                    {{ form.as_p }}
-
-                    <button type="submit" class="btn btn-success mt-3">Сохранить</button>
-                    <a href="{% url 'catalog:home' %}" class="btn btn-secondary mt-3 ms-2">Отмена</a>
-                </form>
+                        <button type="submit" class="btn btn-primary mt-3">
+                            {% if object %}
+                                Сохранить изменения
+                            {% else %}
+                                Создать
+                            {% endif %}
+                        </button>
+                        <a href="{% url 'catalog:home' %}" class="btn btn-secondary mt-3">Отмена</a>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
