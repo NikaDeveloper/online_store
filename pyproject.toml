@@ -15,6 +15,7 @@ psycopg2 = "^2.9.10"
 poetry-core = "^2.2.1"
 ipython = "^9.6.0"
 black = "^25.9.0"
+django-countries = "^7.6.1"
 
 
 [build-system]

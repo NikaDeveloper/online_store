@@ -2,9 +2,11 @@
 {% block content %}
 <div class="container">
 
+    {% if user.is_authenticated %}
     <div class="mb-4">
         <a href="{% url 'catalog:product_create' %}" class="btn btn-success">Добавить новый продукт</a>
     </div>
+    {% endif %}
 
     <div class="row">
         {% for product in products %}
