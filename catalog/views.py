@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Product, Contact
 from django.urls import reverse_lazy, reverse
@@ -36,21 +36,45 @@ class ProductDetailView(DetailView):
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
-    fields = ('name', 'description', 'image', 'category', 'price')
-    template_name = 'catalog/product_form.html'
+    fields = ('name', 'description', 'price', 'category', 'image', 'is_published')
     success_url = reverse_lazy('catalog:home')
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
-    fields = ('name', 'description', 'image', 'category', 'price')
-    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:home')
 
-    def get_success_url(self):
-        return reverse_lazy('catalog:product_detail', kwargs={'pk': self.object.pk})
+    def get_form_class(self):
+        user = self.request.user
+
+        if user.has_perm('catalog.can_unpublish_product'):
+            self.fields = ('is_published',)
+
+        elif user == self.get_object().owner:
+            self.fields = ('name', 'description', 'price', 'category', 'image')
+
+        return super().get_form_class()
+
+    def test_func(self):
+        product = self.get_object()
+        user = self.request.user
+
+        return user == product.owner or user.has_perm('catalog.can_unpublish_product')
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:home')
+
+    def test_func(self):
+        product = self.get_object()
+        user = self.request.user
+
+        is_owner = user == product.owner
+        is_moderator = user.has_perm('catalog.delete_product')
+        return is_owner or is_moderator
