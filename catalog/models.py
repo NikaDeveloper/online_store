@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -9,8 +10,8 @@ class Category(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'категория'
-        verbose_name_plural = 'категории'
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
 
 
 class Product(models.Model):
@@ -22,12 +23,30 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения')
 
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        verbose_name='Владелец',
+        null=True,
+        blank=True
+    )
+
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name='Опубликовано'
+    )
+
     def __str__(self):
         return f'{self.name} ({self.category.name})'
 
     class Meta:
-        verbose_name = 'продукт'
-        verbose_name_plural = 'продукты'
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+        ordering = ('name',)
+
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта"),
+        ]
 
 
 class Contact(models.Model):
@@ -41,5 +60,5 @@ class Contact(models.Model):
         return f"Контакт: {self.name}"
 
     class Meta:
-        verbose_name = 'контакт'
-        verbose_name_plural = 'контакты'
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
