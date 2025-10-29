@@ -12,11 +12,11 @@
 
     {% include 'catalog/includes/inc_main_menu.html' %}
 
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center **bg-light border-bottom**">
         <h1 class="display-4">{% block header_title %}{{ title|default:'Skystore' }}{% endblock %}</h1>
 
         {% if request.resolver_match.url_name == 'home' %}
-        <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели продать</p>
+        <p class="lead">Skystore — учебный проект интернет-магазина, созданный для продажи цифровых товаров: плагинов, ботов и веб-приложений.</p>
         {% endif %}
     </div>
 
@@ -30,22 +30,6 @@
             <div class="col-12 col-md">
                 SkyStore
                 <small class="d-block mb-3 text-muted">&copy; 2023</small>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Категории</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Рассылки</a></li>
-                    <li><a class="text-muted" href="#">Телеграм боты</a></li>
-                    <li><a class="text-muted" href="#">Полезные утилиты</a></li>
-                    <li><a class="text-muted" href="#">Веб-приложения</a></li>
-                    <li><a class="text-muted" href="#">Микросервисы</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>Дополнительно</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Мы пишем</a></li>
-                </ul>
             </div>
             <div class="col-6 col-md">
                 <h5>О нас</h5>

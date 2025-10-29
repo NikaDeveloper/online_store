@@ -53,9 +53,9 @@
 {% endif %}
 
                 {% if user == product.owner %}
-    <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'catalog:delete_product' pk=product.pk %}" class="btn btn-danger">Удалить</a>
 {% elif perms.catalog.delete_product %}
-    <a href="{% url 'catalog:product_delete' pk=product.pk %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'catalog:delete_product' pk=product.pk %}" class="btn btn-danger">Удалить</a>
 {% endif %}
 
             {% endif %}

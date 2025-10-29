@@ -1,8 +1,47 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Product, Contact
-from django.urls import reverse_lazy, reverse
-from .forms import ProductForm
+from .models import Product, Contact, Category
+from django.urls import reverse_lazy
+from django.core.cache import cache
+from django.http import HttpResponse
+
+from .services import get_products_from_cache, get_products_by_category_from_cache, get_categories_from_cache
+
+
+def my_view(request):
+    # Попытка получить данные из кеша
+    data = cache.get('my_key')
+
+    # Если данные не найдены в кеше, выполняем вычисления и сохраняем результат в кеш
+    if not data:
+        data = 'some expensive computation'
+        cache.set('my_key', data, 60 * 15)  # Кешируем данные на 15 минут
+
+    # Возвращаем ответ с данными
+    return HttpResponse(data)
+
+
+class ProductsByCategoryListView(ListView):
+    model = Product
+    template_name = 'catalog/products_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        # Получаем ID категории из URL-параметров
+        category_pk = self.kwargs.get('pk')
+        return get_products_by_category_from_cache(category_pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_pk = self.kwargs.get('pk')
+        # Получаем название категории для заголовка
+        try:
+            category_name = Product.objects.filter(category_id=category_pk).first().category.name
+        except AttributeError:
+            category_name = "Неизвестная категория"
+
+        context['title'] = f'Продукты в категории: {category_name}'
+        return context
 
 
 class ProductListView(ListView):
@@ -11,10 +50,14 @@ class ProductListView(ListView):
     context_object_name = 'products'
     paginate_by = 9
 
+    def get_queryset(self):
+        return get_products_from_cache()
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Каталог товаров'
+        context['categories'] = get_categories_from_cache()
         return context
 
 
