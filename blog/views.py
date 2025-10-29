@@ -3,13 +3,15 @@ from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import BlogEntry
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
-class BlogEntryCreateView(CreateView):
+class BlogEntryCreateView(PermissionRequiredMixin, CreateView):
     model = BlogEntry
     fields = ('title', 'content', 'preview', 'is_published')
     template_name = 'blog/blogentry_form.html'
     success_url = reverse_lazy('blog:list')
+    permission_required = 'blog.add_blogentry'
 
 
 class BlogEntryListView(ListView):
@@ -46,18 +48,20 @@ class BlogEntryDetailView(DetailView):
         return self.object
 
 
-class BlogEntryUpdateView(UpdateView):
+class BlogEntryUpdateView(PermissionRequiredMixin, UpdateView):
     model = BlogEntry
     fields = ('title', 'content', 'preview', 'is_published')
     template_name = 'blog/blogentry_form.html'
     slug_field = 'slug'
+    permission_required = 'blog.change_blogentry'
 
     def get_success_url(self):
         # Используем reverse с аргументом, чтобы перенаправить на страницу статьи
         return reverse('blog:view', kwargs={'slug': self.object.slug})
 
 
-class BlogEntryDeleteView(DeleteView):
+class BlogEntryDeleteView(PermissionRequiredMixin, DeleteView):
     model = BlogEntry
     template_name = 'blog/blogentry_confirm_delete.html'
     success_url = reverse_lazy('blog:list')
+    permission_required = 'blog.delete_blogentry'
